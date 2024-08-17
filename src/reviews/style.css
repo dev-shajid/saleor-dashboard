@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.MuiTableContainer-root {
+    overflow-x: auto !important;
+    max-width: 100% !important;
+}
+
+.MuiTableContainer-root table {
+    min-width: 1100px;
+}
+
+.reviews_container {
+    padding: 2rem 3rem;
+}
+
+.reviews_container .title {
+    font-size: 20px;
+    margin-bottom: 1rem;
+}
+
+.review-table-container th
+{
+    font-size: 1.1em;
+    font-weight: bold;
+    color: var(--mu-colors-text-default1);
+}
+
+.review-table-container img {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+}
+
+.review-table-container .stars {
+    color: #f5c518;
+}
+
+.review-table-container .status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    width: 200px;
+}
+
+.review-table-container .status.approved {
+    background-color: #00ff3c29;
+    color: #00ff3c;
+    border: 1px solid #00ff3cae;
+}
+
+.review-table-container .status.not_approved {
+    background-color: #ff000028;
+    color: #ff0000;
+    border: 1px solid #ff0000b3;
+
+}
+
+.table-wrapper {
+    overflow-y: auto;
+    max-width: 100% !important;
+}
+
+.MuiTable-root th:not(:last-child),
+.MuiTable-root td:not(:last-child) {
+  border-right: 1px solid var(--mu-colors-border-default1);
+}
+
+
+.review-table-container td.MuiTableCell-root:hover{
+    background-color: var(--mu-colors-background-button-default-disabled);
+}
+
+.MuiTableCell-root{
+    padding: 0 16px !important;
+}
+
+.card_title{
+    padding-left: 0 !important;
+}
