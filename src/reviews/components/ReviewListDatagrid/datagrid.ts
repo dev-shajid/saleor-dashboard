@@ -1,13 +1,16 @@
 import { readonlyTextCell, tagsCell } from "@dashboard/components/Datagrid/customCells/cells";
 import { AvailableColumn } from "@dashboard/components/Datagrid/types";
 import { getStatusColor } from "@dashboard/misc";
+import { ReviewListUrlSortField } from "@dashboard/reviews/urls";
+import { Sort } from "@dashboard/types";
+import { getColumnSortDirectionIcon } from "@dashboard/utils/columns/getColumnSortDirectionIcon";
 import { GridCell, Item } from "@glideapps/glide-data-grid";
-
-import { formatDate, formatTime } from "../../../../../cypress/support/formatData/formatDate";
-import { ReviewsQuery } from "@dashboard/graphql";
 import { DefaultTheme } from "@saleor/macaw-ui-next";
+import { ProductReviewsQuery } from "@dashboard/reviews/graphql";
+import moment from "moment-timezone";
 
 export const reviewListStaticColumnsAdapter = (
+  sort: Sort<ReviewListUrlSortField>,
 ): AvailableColumn[] =>
   [
     {
@@ -33,7 +36,7 @@ export const reviewListStaticColumnsAdapter = (
     {
       id: "updatedAt",
       title: "Updated At",
-      width: 140,
+      width: 160,
     },
     {
       id: "status",
@@ -42,7 +45,7 @@ export const reviewListStaticColumnsAdapter = (
     },
   ].map(column => ({
     ...column,
-    // icon: getColumnSortDirectionIcon(sort, column.id),
+    icon: getColumnSortDirectionIcon(sort, column.id),
   }));
 
 export const createGetCellContent =
@@ -51,12 +54,12 @@ export const createGetCellContent =
     columns,
     currentTheme,
   }: {
-    reviews: ReviewsQuery | undefined;
+    reviews: ProductReviewsQuery['getProductReviews'] | undefined;
     columns: AvailableColumn[];
     currentTheme: DefaultTheme;
   }) =>
     ([column, row]: Item): GridCell => {
-      const rowData = reviews.getProductReviews?.[row];
+      const rowData = reviews[row];
       const columnId = columns[column]?.id;
 
       if (!columnId || !rowData) {
@@ -65,7 +68,8 @@ export const createGetCellContent =
 
       switch (columnId) {
         case "user":
-          return readonlyTextCell(rowData.user.firstName + " " + rowData.user.lastName ?? "");
+          const fullName = (rowData.user.firstName + " " + rowData.user.lastName).trim();
+          return readonlyTextCell(fullName || rowData.user.email.split('@')[0]);
         case "product":
           return readonlyTextCell(rowData?.product.name ?? "");
         case "title":
@@ -75,7 +79,7 @@ export const createGetCellContent =
           return readonlyTextCell(rating ?? "");
         case "updatedAt": {
           const date = new Date(rowData?.updatedAt);
-          return readonlyTextCell(formatDate(new Date(date)) + ", " + formatTime(new Date(date)));
+          return readonlyTextCell(moment(date).format("DD/MM/YYYY, hh:mm a"));
         }
         case "status": {
           const tag = rowData?.status

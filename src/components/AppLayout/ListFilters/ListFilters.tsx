@@ -13,9 +13,10 @@ export interface ListFiltersProps<TKeys extends string = string>
     SearchPageProps {
   searchPlaceholder: string;
   errorMessages?: FilterErrorMessages<TKeys>;
-  filterStructure: IFilter<TKeys>;
+  filterStructure?: IFilter<TKeys>;
   actions?: ReactNode;
   filtersEnabled?: boolean;
+  showFilter?: boolean;
 }
 
 export const ListFilters = <TFilterKeys extends string = string>({
@@ -29,12 +30,13 @@ export const ListFilters = <TFilterKeys extends string = string>({
   errorMessages,
   actions,
   filtersEnabled,
+  showFilter=true,
 }: ListFiltersProps<TFilterKeys>) => (
   <>
-    {filtersEnabled && <LegacyFiltersPresetsAlert />}
+    {showFilter && filtersEnabled && <LegacyFiltersPresetsAlert />}
     <Box display="grid" __gridTemplateColumns="auto 1fr" gap={4} paddingBottom={2} paddingX={6}>
       <Box display="flex" alignItems="center" gap={4}>
-        {filtersEnabled ? (
+        {showFilter ? (filtersEnabled ? (
           <ExpressionFilters data-test-id="filters-button" />
         ) : (
           <FiltersSelect<TFilterKeys>
@@ -44,7 +46,7 @@ export const ListFilters = <TFilterKeys extends string = string>({
             onFilterAdd={onFilterChange}
             onFilterAttributeFocus={onFilterAttributeFocus}
           />
-        )}
+        )): null}
         <Box __width="320px">
           <SearchInput
             initialSearch={initialSearch}

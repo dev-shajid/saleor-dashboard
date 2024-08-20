@@ -481,6 +481,11 @@ export const sectionNames = defineMessages({
     defaultMessage: "Home",
     description: "home section name",
   },
+  reviews: {
+    id: "4JW9iJs",
+    defaultMessage: "Reviews",
+    description: "reviews section name",
+  },
   navigation: {
     id: "9C7PZE",
     defaultMessage: "Navigation",

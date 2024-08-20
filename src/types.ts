@@ -123,7 +123,7 @@ export interface FilterPagePropsWithPresets<TKeys extends string, TOpts extends 
 
 export interface FilterProps<TKeys extends string> {
   currencySymbol?: string;
-  onFilterChange: (filter: IFilter<TKeys>) => void;
+  onFilterChange?: (filter: IFilter<TKeys>) => void;
   onFilterAttributeFocus?: (id?: string) => void;
 }
 
@@ -168,8 +168,8 @@ export interface TagNode {
 }
 
 export type Pagination = Partial<{
-  after: string;
-  before: string;
+  after?: string;
+  before?: string;
 }>;
 
 export type Dialog<TDialog extends string> = Partial<{

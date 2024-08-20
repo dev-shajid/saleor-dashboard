@@ -64,6 +64,7 @@ import { navigationSection } from "./navigation/urls";
 import { NotFound } from "./NotFound";
 import OrdersSection from "./orders";
 import PageSection from "./pages";
+import ReviewSection from "./reviews";
 import PageTypesSection from "./pageTypes";
 import PermissionGroupSection from "./permissionGroups";
 import PluginsSection from "./plugins";
@@ -78,7 +79,6 @@ import { paletteOverrides, themeOverrides } from "./themeOverrides";
 import TranslationsSection from "./translations";
 import WarehouseSection from "./warehouses";
 import { warehouseSection } from "./warehouses/urls";
-import ReviewsSection from "./reviews";
 
 if (GTM_ID) {
   TagManager.initialize({ gtmId: GTM_ID });
@@ -185,7 +185,7 @@ const Routes: React.FC = () => {
                   <SectionRoute
                     permissions={[PermissionEnum.MANAGE_PRODUCTS]}
                     path="/reviews"
-                    component={ReviewsSection}
+                    component={ReviewSection}
                   />
                   <SectionRoute
                     permissions={[PermissionEnum.MANAGE_PRODUCTS]}

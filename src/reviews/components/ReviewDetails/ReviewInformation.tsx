@@ -3,13 +3,13 @@ import CardSpacer from "@dashboard/components/CardSpacer";
 import CardTitle from "@dashboard/components/CardTitle";
 import Grid from "@dashboard/components/Grid";
 import { Card, CardContent, CardMedia, TextField } from "@material-ui/core";
-import { formatDate, formatTime } from "../../../../cypress/support/formatData/formatDate";
-import { makeStyles } from "@saleor/macaw-ui";
-import React from "react";
+import { makeStyles, TooltipMountWrapper } from "@saleor/macaw-ui";
+import React, { Fragment } from "react";
 import { FormattedMessage } from "react-intl";
-import { Box, Button, useTheme } from "@saleor/macaw-ui-next";
+import { Box, Button, Tooltip, useTheme } from "@saleor/macaw-ui-next";
 import useNavigator from "@dashboard/hooks/useNavigator";
 import { PlayCircleFilled } from "@material-ui/icons";
+import moment from "moment-timezone";
 
 const useStyles = makeStyles(
   theme => ({
@@ -22,9 +22,17 @@ const useStyles = makeStyles(
     sectionHeader: {
       marginBottom: theme.spacing(),
     },
+    card_title: {
+      paddingLeft: theme.spacing(0),
+    },
   }),
   { name: "ReviewInformation" },
 );
+
+
+function textSlice(text: string, length: number = 20) {
+  return text.length > length ? text.slice(0, length) + "..." : text;
+}
 
 export interface ReviewInformationProps {
   data: {
@@ -66,25 +74,34 @@ const ReviewInformation: React.FC<ReviewInformationProps> = props => {
               <Box display="grid" gap={4} style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 150px))' }}>
                 {
                   data.media.map((media, index) => (
-                    <>
+                    <Fragment key={index}>
                       {
                         media.type == 'IMAGE' ?
-                          <div style={{ borderRadius: 5, maxWidth: '100%', background: currentTheme == 'defaultDark' ? '#424558' : '#bbbbbb' }}>
+                          <a href={media.url} target="_blank" style={{ borderRadius: 5, maxWidth: '100%', background: currentTheme == 'defaultDark' ? '#424558' : '#bbbbbb' }}>
                             <CardMedia
-                              key={index}
                               image={media.url}
                               style={{ maxWidth: '100%', aspectRatio: '1/1', borderRadius: 5 }}
                             />
-                          </div> : null
+                          </a> : null
                       }
                       {
                         media.type == 'VIDEO' ?
-                          <a href={media.url} target="_blank" style={{ display: 'flex', flexDirection:'column', justifyContent: 'center', alignItems: 'center', borderRadius: 5, maxWidth: '100%', aspectRatio: '1/1', textAlign:'center', cursor:'pointer', background: currentTheme == 'defaultDark' ? '#424558' : '#bbbbbb' }}>
-                            <PlayCircleFilled style={{aspectRatio:'1/1', width:'4rem', fontSize:'4rem'}}/>
-                            <p>{media.alt}</p>
-                          </a> : null
+                          <Tooltip>
+                            <Tooltip.Trigger>
+                              <TooltipMountWrapper>
+                                <a href={media.url} target="_blank" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', borderRadius: 5, maxWidth: '100%', aspectRatio: '1/1', textAlign: 'center', cursor: 'pointer', background: currentTheme == 'defaultDark' ? '#424558' : '#bbbbbb' }}>
+                                  <PlayCircleFilled style={{ aspectRatio: '1/1', width: '4rem', fontSize: '4rem' }} />
+                                  <p>{textSlice(media.alt)}</p>
+                                </a>
+                              </TooltipMountWrapper>
+                            </Tooltip.Trigger>
+                            <Tooltip.Content>
+                              <Tooltip.Arrow />
+                              {media.alt}
+                            </Tooltip.Content>
+                          </Tooltip> : null
                       }
-                    </>
+                    </Fragment>
                   ))
                 }
               </Box>
@@ -99,7 +116,7 @@ const ReviewInformation: React.FC<ReviewInformationProps> = props => {
             name="createdAt"
             type="text"
             label="Created At"
-            value={formatDate(new Date(data.createdAt)) + ", " + formatTime(new Date(data.createdAt))}
+            value={moment(new Date(data.createdAt)).format("DD/MM/YYYY, hh:mm a")}
             InputProps={{
               readOnly: true,
             }}
@@ -110,7 +127,7 @@ const ReviewInformation: React.FC<ReviewInformationProps> = props => {
             name="updatedAt"
             type="text"
             label="Updated At"
-            value={formatDate(new Date(data.updatedAt)) + ", " + formatTime(new Date(data.updatedAt))}
+            value={moment(new Date(data.updatedAt)).format("DD/MM/YYYY, hh:mm a")}
             InputProps={{
               readOnly: true,
             }}
@@ -204,7 +221,7 @@ const ReviewInformation: React.FC<ReviewInformationProps> = props => {
 
       <CardContent className={classes.content}>
         <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <CardTitle className="card_title" title="Product Information" />
+          <CardTitle className={classes.card_title} title="Product Information" />
           <Button size="small" variant="secondary" color='default2' onClick={() => navigate(`/products/${data.product.id}`)}>
             Product Details
           </Button>
@@ -216,13 +233,13 @@ const ReviewInformation: React.FC<ReviewInformationProps> = props => {
               <Box display="grid" gap={4} style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 150px))' }}>
                 {
                   data.product.media.map((media, index) => (
-                    <div style={{ borderRadius: 5, aspectRatio: '1/1', maxWidth: '100%', background: currentTheme == 'defaultDark' ? '#424558' : '#bbbbbb' }}>
+                    <a href={media.url} target="_blank" key={index} style={{ borderRadius: 5, aspectRatio: '1/1', maxWidth: '100%', background: currentTheme == 'defaultDark' ? '#424558' : '#bbbbbb' }}>
                       <CardMedia
                         key={index}
                         image={media.url}
                         style={{ maxWidth: '100%', aspectRatio: '1/1', borderRadius: 5 }}
                       />
-                    </div>))
+                    </a>))
                 }
               </Box>
               <CardSpacer />

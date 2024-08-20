@@ -30,6 +30,7 @@ import { useIntl } from "react-intl";
 
 import { SidebarMenuItem } from "../types";
 import { mapToExtensionsItems } from "../utils";
+import { StarBorderSharp } from "@material-ui/icons";
 
 export function useMenuStructure() {
   const extensions = useExtensions(extensionMountPoints.NAVIGATION_SIDEBAR);
@@ -58,8 +59,8 @@ export function useMenuStructure() {
       type: "item",
     },
     {
-      icon: renderIcon(<TranslationsIcon />),
-      label: 'Reviews',
+      icon: renderIcon(<StarBorderSharp />),
+      label: intl.formatMessage(sectionNames.reviews),
       id: "reviews",
       url: "/reviews",
       type: "item",

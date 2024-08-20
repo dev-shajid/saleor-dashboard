@@ -1,9 +1,6 @@
 
-import {
-    ReviewDetailsQuery,
-    useReviewDetailsQuery,
-} from "@dashboard/graphql";
 import React, { createContext, useContext } from "react";
+import { ReviewDetailsQuery, useReviewDetailsQuery } from "../graphql";
 
 export interface ReviewDetailsProviderProps {
     id: string;
@@ -29,8 +26,6 @@ const ReviewDetailsProvider: React.FC<ReviewDetailsProviderProps> = ({ children,
             id,
         },
     });
-
-    console.log({data, loading})
 
     const providerValues: ReviewDetailsConsumerProps = {
         review: data,

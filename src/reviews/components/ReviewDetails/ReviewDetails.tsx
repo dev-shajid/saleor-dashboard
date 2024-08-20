@@ -3,23 +3,9 @@ import { TopNav } from "@dashboard/components/AppLayout/TopNav";
 import { CardSpacer } from "@dashboard/components/CardSpacer";
 import Form from "@dashboard/components/Form";
 import { DetailPageLayout } from "@dashboard/components/Layouts";
-import {
-  ReviewDetailsQuery,
-} from "@dashboard/graphql";
 import React from "react";
 import ReviewInformation from "./ReviewInformation";
-
-export interface ReviewDetailsPageFormData {
-  user: { id: string, email: string, firstName: string, lastName: string };
-  product: { id: string, name: string, media: { url: string }[] };
-  media: {url:string, alt:string | null, type:string | null}[];
-  title: string;
-  review: string;
-  rating: number;
-  createdAt: string;
-  updatedAt: string;
-  status: boolean;
-}
+import { ReviewDetailsQuery } from "@dashboard/reviews/graphql";
 
 export interface ReviewDetailsPageProps {
   reviewId: string;
@@ -32,7 +18,8 @@ const ReviewDetails: React.FC<ReviewDetailsPageProps> = ({
   disabled,
 }: ReviewDetailsPageProps) => {
 
-  const initialForm: ReviewDetailsPageFormData = {
+  const initialForm: ReviewDetailsQuery['getProductReview'] = {
+    id: review?.id!,
     user: review?.user,
     product: review?.product,
     title: review?.title!,

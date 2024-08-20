@@ -29,6 +29,7 @@ const ReviewDetailsViewInner: React.FC<ReviewDetailsViewProps> = ({
   if (review?.getProductReview === null) {
     return <NotFoundPage backHref={'/reviews'} />;
   }
+  // console.log({review, id, reviewDetailsLoading})
 
   return (
     <>
@@ -43,7 +44,7 @@ const ReviewDetailsViewInner: React.FC<ReviewDetailsViewProps> = ({
 };
 
 export default function ReviewDetailsPage({ match }) {
-  const id = match.params.id
+  const id = match.params.id?.replaceAll('%3D','=')
   return (
     <div>
       <ReviewDetailsProvider id={id}>

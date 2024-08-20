@@ -1,63 +1,63 @@
 import { gql } from "@apollo/client";
 
-export const productMediaCreateMutation = gql`
-  mutation ProductMediaCreate(
-    $product: ID!
-    $image: Upload
-    $alt: String
-    $mediaUrl: String
+export const pageCreate = gql`
+  mutation PageCreate($input: PageCreateInput!) {
+    pageCreate(input: $input) {
+      errors {
+        ...PageErrorWithAttributes
+      }
+      page {
+        id
+      }
+    }
+  }
+`;
+
+export const pageUpdate = gql`
+  mutation PageUpdate(
+    $id: ID!
+    $input: PageInput!
+    $firstValues: Int
+    $afterValues: String
+    $lastValues: Int
+    $beforeValues: String
   ) {
-    productMediaCreate(
-      input: {
-        alt: $alt
-        image: $image
-        product: $product
-        mediaUrl: $mediaUrl
-      }
-    ) {
+    pageUpdate(id: $id, input: $input) {
       errors {
-        ...ProductError
+        ...PageErrorWithAttributes
       }
-      product {
-        id
-        media {
-          ...ProductMedia
-        }
+      page {
+        ...PageDetails
       }
     }
   }
 `;
 
-export const productDeleteMutation = gql`
-  mutation ProductDelete($id: ID!) {
-    productDelete(id: $id) {
+export const pageRemove = gql`
+  mutation PageRemove($id: ID!) {
+    pageDelete(id: $id) {
       errors {
-        ...ProductError
-      }
-      product {
-        id
-      }
-    }
-  }
-`;
-export const productUpdateMutation = gql`
-  mutation ProductUpdate($id: ID!, $input: ProductInput!) {
-    productUpdate(id: $id, input: $input) {
-      errors {
-        ...ProductErrorWithAttributes
+        ...PageError
       }
     }
   }
 `;
 
-export const productCreateMutation = gql`
-  mutation ProductCreate($input: ProductCreateInput!) {
-    productCreate(input: $input) {
+export const pageBulkPublish = gql`
+  mutation PageBulkPublish($ids: [ID!]!, $isPublished: Boolean!) {
+    pageBulkPublish(ids: $ids, isPublished: $isPublished) {
       errors {
-        ...ProductErrorWithAttributes
+        ...PageBulkPublishErrorFragment
       }
-      product {
-        id
+    }
+  }
+`;
+
+export const pageBulkRemove = gql`
+  mutation PageBulkRemove($ids: [ID!]!) {
+    pageBulkDelete(ids: $ids) {
+      errors {
+        ...PageBulkRemoveErrorFragment
       }
     }
   }
