@@ -27,7 +27,7 @@ const ReviewDetailsViewInner: React.FC<ReviewDetailsViewProps> = ({
   }
 
   if (review?.getProductReview === null) {
-    return <NotFoundPage backHref={'/reviews'} />;
+    return <NotFoundPage backHref={'/dashboard/reviews'} />;
   }
   // console.log({review, id, reviewDetailsLoading})
 

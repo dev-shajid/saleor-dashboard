@@ -143,22 +143,6 @@ export const ReviewList: React.FC<ReviewListProps> = ({ params }) => {
     },
   });
 
-  const handleUpdateReviews = (status: boolean) => {
-    selectedRowIds.forEach((id) => {
-      if (reviews?.find(e => e.id == id).status != status) updateMutation({ variables: { id, status } });
-    })
-    clearRowSelection()
-  }
-
-
-  const handleDeleteReviews = () => {
-    selectedRowIds.forEach((id) => {
-      deleteMutation({ variables: { id } });
-    })
-    refetch()
-    clearRowSelection()
-  }
-
 
   usePaginationReset(reviewListUrl, params, settings.rowNumber);
 
@@ -194,6 +178,25 @@ export const ReviewList: React.FC<ReviewListProps> = ({ params }) => {
       })
     }
   })
+
+
+
+
+  const handleUpdateReviews = (status: boolean) => {
+    selectedRowIds.forEach((id) => {
+      if (reviews?.find(e => e.id == id).status != status) updateMutation({ variables: { id, status } });
+    })
+    clearRowSelection()
+  }
+
+
+  const handleDeleteReviews = () => {
+    selectedRowIds.forEach((id) => {
+      deleteMutation({ variables: { id } });
+    })
+    clearRowSelection()
+    refetch()
+  }
 
   React.useEffect(() => {
     if (params.query) setReviews(pre => pre?.filter(e => e.product.name.toLowerCase().includes(params.query.toLowerCase())))
